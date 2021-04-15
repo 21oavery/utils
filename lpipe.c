@@ -19,19 +19,39 @@ typedef struct {
 
 #define TYPE_NODE 3
 typedef struct _lnode {
-    struct _lval val;
-    struct _lnode *next;
-    size_t ref_cnt;
+    struct _lval car;
+    struct _lval cdr;
 } LNode;
+
+#define TYPE_CALL 4
+typedef struct {
+    LVal (*call)(void *, LNode *);
+    void (*dealloc)(void *);
+    void *data;
+} LCall;
 
 typedef struct _lval {
     int type;
+    size_t ref_cnt;
     union {
         LString lstring;
         LInt lint;
         LDouble ldouble;
         LNode lnode;
-    }
+        LCall lcall;
+    } inner;
 } LVal;
 
-typedef 
+void free_lval(LVal *val) {
+    if (
+
+// Does not handle reference counts
+char *try_get_str(LVal *val) {
+    if (val->type != TYPE_STRING) return NULL;
+    return val->inner.lstring.data;
+}
+
+char *try_get_str(LVal *val) {
+    
+
+// builtin: defun, car, cdr
